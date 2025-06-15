@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lots o' level types</name>
+    </assembly>
+    <members>
+        <member name="F:Lots_o__level_types.BasePlugin.PartyBashType">
+            <summary>
+            This is the party bash style suggested by @0salt_grain0
+            </summary>
+        </member>
+        <member name="F:Lots_o__level_types.BasePlugin.TechyType">
+            <summary>
+            This is the techy style suggested by @bsideskid
+            </summary>
+        </member>
+        <member name="F:Lots_o__level_types.BasePlugin.ShaftType">
+            <summary>
+            This is the shaft style suggested by @bsideskid
+            </summary>
+        </member>
+        <member name="M:Lots_o__level_types.BasePlugin.ModifyIntoPartybash(LevelObject,System.Int32)">
+            <summary>
+             Turns the specified level object into a party bash variant
+             </summary>
+             <param name="toModify">Level object to modify</param>
+             <param name="levelId"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Lots_o__level_types.BasePlugin.ModifyIntoTechy(LevelObject,System.Int32)">
+            <summary>
+             Turns the specified level object into a Techy variant
+             </summary>
+             <param name="toModify">Level object to modify</param>
+             <param name="levelId"></param>
+             <returns></returns>
+        </member>
+        <member name="M:Lots_o__level_types.Extensions.AddFunctionToAllRoomAssets``1(RoomAsset[])">
+            <summary>
+            Adds a <see cref="T:RoomFunction"/> to every RoomAssets
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="RoomAssets"></param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PartynoobAPI</name>
+    </assembly>
+    <members>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.Build">
+            <summary>
+            Builds and returns the structure builder
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.GetPrefab(UnityEngine.GameObject@)">
+            <summary>
+            Gets and generates the prefab
+            </summary>
+            <param name="Prefab">The prefab itself</param>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.SetStructureComponent``1">
+            <summary>
+            Sets the <see cref="T:StructureBuilder"/> component to whatever you made
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.AddModel3dToStructure(UnityEngine.GameObject)">
+            <summary>
+            Adds a 3D model to the prefab
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.AddComponentToPrefab``1">
+            <summary>
+            Adds a component to the prefab IF any
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.SetStructureName(System.String)">
+            <summary>
+            Sets the name of the structure Dont add "Structure_" in the name as it will be handled automatically
+            </summary>
+            <param name="Name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.structureBuilder.AddCollider(UnityEngine.Vector3,System.Boolean,PartynoobAPI.Extensions.ColliderBuilder.ShapeEnum)">
+            <summary>
+            Adds a collider to the prefab (if any)
+            </summary>
+            <param name="Size">Size of the Collider (10x10x10 = a whole cell) If its a sphere then X will be the size, if capsule only X for radius and Y for Height</param>
+            <param name="IsTrigger">Is the collider trigger?</param>
+            <param name="Shape">What shape</param>
+            <returns></returns>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.ObjectExtension.AddFunctionToAllRoomAssets``1(RoomAsset[])">
+            <summary>
+            Adds a <see cref="T:RoomFunction"/> to every RoomAssets
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="RoomAssets"></param>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.ObjectExtension.ChangeMapColorAndBgForAllRoomAssets(RoomAsset[],UnityEngine.Color,UnityEngine.Texture2D)">
+            <summary>
+            Changes the room's color and the icon in the map
+            </summary>
+            <param name="RoomAssets"></param>
+            <param name="color">Color shown on map</param>
+            <param name="MapBG">Icon shown on map</param>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.ObjectExtension.ChangeMapColorAndBgForAllRoomAssets(RoomAsset[],UnityEngine.Color)">
+            <summary>
+            Changes the room's color in the map
+            </summary>
+            <param name="RoomAssets"></param>
+            <param name="color">Color shown on map</param>
+        </member>
+        <member name="M:PartynoobAPI.Extensions.ObjectExtension.ChangeMapColorAndBgForAllRoomAssets(RoomAsset[],UnityEngine.Texture2D)">
+            <summary>
+            Changes the room's icon in the map
+            </summary>
+            <param name="RoomAssets"></param>
+            <param name="MapBG">Icon shown on map</param>
+        </member>
+    </members>
+</doc>

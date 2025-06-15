@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PineDebug</name>
+    </assembly>
+    <members>
+        <member name="T:PineDebug.PineDebugManager.PineButton">
+            <summary>
+            The data that the button contains
+            </summary>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.PineButton.#ctor(System.String,UnityEngine.GameObject,UnityEngine.Events.UnityAction)">
+            <summary>
+            The data that the button contains
+            </summary>
+            <param name="n">The name of the button</param><param name="b">The button's non-static object</param><param name="f">The action to store into the button</param>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.PineButton.#ctor(System.String,UnityEngine.GameObject,UnityEngine.Events.UnityAction{System.String})">
+            <summary>
+            The data that the button contains
+            </summary>
+            <param name="n">The name of the button</param><param name="b">The button's non-static object</param><param name="f">The action to store into the button</param>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.PineButton.#ctor(System.String,UnityEngine.GameObject,UnityEngine.Events.UnityAction{System.Boolean})">
+            <summary>
+            The data that the button contains
+            </summary>
+            <param name="n">The name of the button</param><param name="b">The button's non-static object</param><param name="f">The action to store into the button</param>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.PineButton.#ctor(System.String,UnityEngine.GameObject,System.Action)">
+            <summary>
+            The data that the button contains
+            </summary>
+            <param name="n">The name of the button</param><param name="b">The button's non-static object</param><param name="f">The action to store into the button</param>
+        </member>
+        <member name="T:PineDebug.PineDebugManager.PineButtonList">
+            <summary>
+            The list that contains the PineDebug buttons
+            </summary>
+        </member>
+        <member name="P:PineDebug.PineDebugManager.buttonLists">
+            <summary>
+            Required to add in custom buttons and make them function properly.
+            </summary>
+        </member>
+        <member name="P:PineDebug.PineDebugManager.BaldiDeathDisabled">
+            <summary>
+            If enabled, friendly fire will be disabled and Baldi will unable to kill the player.
+            </summary>
+        </member>
+        <member name="P:PineDebug.PineDebugManager.NoConsumption">
+            <summary>
+            If enabled, the player will have infinite item uses. (Conflicts with other mod menus)
+            </summary>
+        </member>
+        <member name="P:PineDebug.PineDebugManager.PlayerActiveTrigger">
+            <summary>
+            If enabled, the player will have their collision triggers disabled. (Conflicts with other mod menus)
+            </summary>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.Initialize">
+            <summary>
+            Use it once after it has been created
+            </summary>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.GrabThemes">
+            <summary>
+            Used for the new themes feature
+            </summary>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.CreateCanvas(System.String,System.Int32,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>
+            A helper for creating a new canvas
+            </summary>
+            <param name="name">The name of the canvas object</param><param name="sortOrder">The sorting order for the canvas</param>
+            <param name="resolution">What resolution size should the canvas be</param>
+            <param name="refPixels">Amount of referenced pixels per unit</param><param name="includePlaneDistance">Adds in the plane distance component for the canvas</param>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.CreateButton(System.String,UnityEngine.Events.UnityAction,UnityEngine.Texture2D)">
+            <summary>
+            Creates a new button for the PineDebug Menu
+            </summary>
+            <param name="title">The text that would shown when hovering at the button</param>
+            <param name="buttonClick">The action when clicking on the button</param>
+            <param name="icon">The icon for the button</param>
+            <returns>The created regular <see cref="T:PineDebug.PineDebugManager.PineButton"/></returns>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.CreateTextInput(System.String,PineDebug.InputType,UnityEngine.Events.UnityAction{System.String},UnityEngine.Events.UnityAction{System.String},System.String)">
+            <summary>
+            Creates a new text input button for the PineDebug Menu
+            </summary>
+            <param name="title">The text that would shown when hovering at the button</param>
+            <param name="type">Whenever you can apply numbers, letters, or integers.</param>
+            <param name="atValueEnter">The action when pressing enter or click out of the button's radius</param>
+            <param name="onSelect">The action when the button was clicked on</param>
+            <param name="defaultValue">The default value for the button</param>
+            <returns>The created text input <see cref="T:PineDebug.PineDebugManager.PineButton"/></returns>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.CreateCheckbox(System.String,UnityEngine.Events.UnityAction{System.Boolean},System.Boolean)">
+            <summary>
+            Creates a new checkbox button for the PineDebug Menu
+            </summary>
+            <param name="title">The text that would shown when hovering at the button</param>
+            <param name="atValueCheck">The action when clicking on the button</param>
+            <param name="startingBool">Whenever if the button starts as being checked or not</param>
+            <returns>The created checkbox <see cref="T:PineDebug.PineDebugManager.PineButton"/></returns>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.ChangeButtonVisibility(System.Collections.Generic.List{PineDebug.PineDebugManager.PineButton},System.Boolean)">
+            <summary>
+            Changes the visibilty of the PineDebug buttons
+            </summary>
+            <param name="buttons">The list of buttons to affect</param>
+            <param name="hide">Whenever you want the button to be hidden or not</param>
+        </member>
+        <member name="M:PineDebug.PineDebugManager.ChangeButtonVisibility(PineDebug.PineDebugManager.PineButton,System.Boolean)">
+            <summary>
+            Changes the visibilty of a PineDebug button
+            </summary>
+            <param name="button">The button to affect</param>
+            <param name="hide">Whenever you want the button to be hidden or not</param>
+        </member>
+        <member name="T:PineDebug.InputType">
+            <summary>
+            Acceptable types for PineDebug's text input buttons
+            </summary>
+        </member>
+        <member name="F:PineDebug.InputType._string">
+            <summary>
+            The input type is a string
+            </summary>
+        </member>
+        <member name="F:PineDebug.InputType._float">
+            <summary>
+            The input type is a decimal
+            </summary>
+        </member>
+        <member name="F:PineDebug.InputType._int">
+            <summary>
+            The input type is a whole number
+            </summary>
+        </member>
+        <member name="F:PineDebug.PineDebugTheme.usesimagelogo">
+            <summary>
+            Not yet used!
+            </summary>
+        </member>
+        <member name="F:PineDebug.PineDebugTheme.logotext">
+            <summary>
+            Not yet used!
+            </summary>
+        </member>
+    </members>
+</doc>
