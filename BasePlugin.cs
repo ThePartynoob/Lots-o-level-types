@@ -236,7 +236,7 @@ namespace Lots_o__level_types
                 .SetLayer("CollidableEntities")
                 .SetBaseRadius(0.5f)
                 .AddTrigger(0.5f)
-                
+                 
                 .SetHeight(10)
                 .AddDefaultRenderBaseFunction(AssetMan.Get<Sprite>("spr_bigcloud"))
                 .Build();
