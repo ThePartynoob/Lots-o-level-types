@@ -40,6 +40,8 @@ namespace Lots_o__level_types
         /// </summary>
         public static LevelType ShaftType;
 
+        public static LevelType GreenhouseType;
+
         private RoomAsset[] ButtonsroomLayout;
 
         private RoomAsset[] ElectricalRoomLayout;
@@ -54,7 +56,7 @@ namespace Lots_o__level_types
 
         IEnumerator PreLoad()
         {
-            yield return 4;
+            yield return 5;
             yield return "Loading party bash assets";
             PartyBashType = EnumExtensions.ExtendEnum<LevelType>("PartyBash");
             
@@ -247,11 +249,11 @@ namespace Lots_o__level_types
             var lightRenderer = BaseLightRenderer.AddComponent<SpriteRenderer>();
             BaseLightRenderer.transform.SetParent(LightPrefab.transform, false);
             lightRenderer.gameObject.layer = LayerMask.NameToLayer("Billboard");
-            BaseLightRenderer.transform.localPosition += new Vector3(0, 5, 0);
+            
+            LightPrefab.ConvertToPrefab(true);
+            lightRenderer.transform.localPosition += new Vector3(0, 8.5f, 0);
             lightRenderer.material = Resources.FindObjectsOfTypeAll<Material>().First(x => x.name == "SpriteStandard_Billboard");
             lightRenderer.sprite = AssetMan.Get<Sprite>("spr_shafts_light");
-            LightPrefab.ConvertToPrefab(true);
-            
             AssetMan.Add<Transform>("light_Shafts", LightPrefab.transform);
 
             // creating SteamShooterBox and material
@@ -275,7 +277,7 @@ namespace Lots_o__level_types
             Structure_SteamShooter structure_SteamShooter = StructureSteamShooterObj.AddComponent<Structure_SteamShooter>();
             structure_SteamShooter.prefab = SteamShooter;
             AssetMan.Add<Structure_SteamShooter>("SS", structure_SteamShooter);
-
+            yield return "loading Greenhouse level type assets";
 
 
             yield return "Adding level typed Support, if no level typed then this will be skipped";
@@ -292,6 +294,7 @@ namespace Lots_o__level_types
         /// <param name="toModify">Level object to modify</param>
         /// <param name="levelId"></param>
         /// <returns></returns>
+        #region Partybash floor type
         public void ModifyIntoPartybash(LevelObject toModify, int levelId)
         {
             toModify.hallCeilingTexs = [new WeightedTexture2D() {
@@ -383,13 +386,14 @@ namespace Lots_o__level_types
 
 
         }
-
+        #endregion
         ///<summary>
         /// Turns the specified level object into a Techy variant
         /// </summary>
         /// <param name="toModify">Level object to modify</param>
         /// <param name="levelId"></param>
         /// <returns></returns>
+        #region Techy floor type
         public void ModifyIntoTechy(LevelObject toModify, int levelId)
         {
             toModify.hallCeilingTexs = [new WeightedTexture2D() {
@@ -526,7 +530,8 @@ namespace Lots_o__level_types
                     weight = 9999
                 }];
         }
-
+        #endregion
+        #region Shafts floor type
         public void ModifyIntoShafts(LevelObject toModify, int levelId)
         {
             toModify.hallCeilingTexs = [new WeightedTexture2D() {
@@ -542,8 +547,8 @@ namespace Lots_o__level_types
                 weight = 99
             }];
 
-            
-            toModify.maxSize += new IntVector2(14,20);
+
+            toModify.maxSize += new IntVector2(14, 20);
             toModify.minSize += new IntVector2(14, 20);
             toModify.minPlots *= 8;
             toModify.maxPlots *= 8;
@@ -627,23 +632,23 @@ namespace Lots_o__level_types
                     selection = AssetMan.Get<Transform>("light_Shafts"),
                     weight = 9999
                 }];
-                
-                
+
+
             }
             toModify.hallLights = [new WeightedTransform() {
                     selection = AssetMan.Get<Transform>("light_Shafts"),
                     weight = 9999
                 }];
-            
-        }
 
+        }
+        #endregion
         public bool shouldGenerateFloorType(string levelName, int LevelId, SceneObject scene, string TypeName)
         {
             if (levelName != "F4" && levelName != "F5" 
                 && Config.Bind<bool>("Enables the floor type " + TypeName + " disabling it will make it not spawn on F4 and F5",TypeName,true).Value) return false;
             return true;
         }
-
+        #region floor type creators
         void PartyBashTypeCreator(string levelName, int levelId, SceneObject scene)
         {
             if (!shouldGenerateFloorType(levelName, levelId, scene, "PartyBash")) return;
@@ -746,6 +751,34 @@ namespace Lots_o__level_types
 
 
         }
+        void GreenhouseTypeCreator(string levelName, int levelId, SceneObject scene)
+        {
+            if (!shouldGenerateFloorType(levelName, levelId, scene, "Shafts")) return;
+            CustomLevelObject[] supportedObjects = scene.GetCustomLevelObjects();
+            CustomLevelObject factorylevel = supportedObjects.First(x => x.type == LevelType.Factory);
+            if (factorylevel == null) return;
+            CustomLevelObject ShaftsClone = factorylevel.MakeClone();
+            ShaftsClone.type = ShaftType;
+            ShaftsClone.name = "ShaftClone";
+            List<StructureWithParameters> structures = ShaftsClone.forcedStructures.ToList();
+            structures.RemoveAll(x => x.prefab is Structure_Rotohalls);
+            structures.RemoveAll(x => x.prefab is Structure_ConveyorBelt);
+            structures.RemoveAll(x => x.prefab.name == "LockdownDoorConstructor");
+            structures.RemoveAll(x => x.prefab is Structure_LevelBox);
+           
+            ShaftsClone.forcedStructures = structures.ToArray();
+            
+            ModifyIntoShafts(ShaftsClone, levelId);
+            scene.randomizedLevelObject = scene.randomizedLevelObject.AddToArray(new WeightedLevelObject()
+            {
+                selection = ShaftsClone,
+                weight = 100
+            });
+
+
+
+        }
+        #endregion
 
         void LevelTypeCreatorHandler(string levelName, int levelId, SceneObject scene)
         {
