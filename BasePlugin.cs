@@ -57,9 +57,10 @@ namespace Lots_o__level_types
         IEnumerator PreLoad()
         {
             yield return 5;
+            #region 1-3 floor type
             yield return "Loading party bash assets";
             PartyBashType = EnumExtensions.ExtendEnum<LevelType>("PartyBash");
-            
+
             AssetMan.Add<Sprite>("spr_partybash_wall", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "partybash_hallwaywall.png"));
             AssetMan.Add<Sprite>("spr_partybash_floor", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "partybash_hallwayfloor.png"));
             AssetMan.Add<Sprite>("spr_partybash_ceiling", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "partybash_ceiling.png"));
@@ -73,7 +74,7 @@ namespace Lots_o__level_types
             Structure_BallonSpawner Balloon_spawner = BalloonsSpawnerObject.AddComponent<Structure_BallonSpawner>();
             AssetMan.Add<Structure_BallonSpawner>("BalloonSpawner", Balloon_spawner);
 
-            AssetMan.Add<ItemObject>("itm_present",new ItemBuilder(this.Info)
+            AssetMan.Add<ItemObject>("itm_present", new ItemBuilder(this.Info)
                 .SetAsInstantUse()
                 .SetGeneratorCost(20)
                 .SetItemComponent<Present>()
@@ -103,7 +104,7 @@ namespace Lots_o__level_types
             AssetMan.Add<Sprite>("spr_Belt", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "Belt.png"));
             AssetMan.Add<Sprite>("spr_redtex", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "redtex.png"));
             AssetMan.Add<Sprite>("Icon_lsrOn", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 14, "IconLaser_On.png"));
-            
+
             AssetMan.Add<Sprite>("Icon_lsrOff", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 14, "IconLaser_Off.png"));
             AssetMan.Add<Sprite>("Map_Button", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 14, "MapBG_Buttons.png"));
             AssetMan.Add<Sprite>("Map_Electrical", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 14, "MapBG_Electrical.png"));
@@ -115,14 +116,14 @@ namespace Lots_o__level_types
             AssetMan.Add("Aud_LaserOn", ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(this, "Laser_Activate.wav"), "sfx_laseractivate", SoundType.Effect, Color.white, 0.4f));
             AssetMan.Add("Aud_LaserOff", ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(this, "Laser_Deactivate.wav"), "sfx_laserdeactivate", SoundType.Effect, Color.white, 0.4f));
             ButtonsroomLayout = RoomFactory.CreateAssetsFromPath(Path.Combine(modPath, "ButtonroomLayouts.cbld"), 0, false, null, false, false, null, false, true).ToArray();
-            
+
             foreach (var room in ButtonsroomLayout)
             {
                 room.ceilTex = AssetMan.Get<Sprite>("spr_techy_ceiling").texture;
                 room.florTex = AssetMan.Get<Sprite>("spr_techy_floor").texture;
                 room.wallTex = AssetMan.Get<Sprite>("spr_techy_wall").texture;
                 room.color = Color.blue;
-                
+
                 room.type = RoomType.Room;
                 room.category = RoomCategory.Special;
                 room.lightPre = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "HangingLight").transform;
@@ -136,7 +137,7 @@ namespace Lots_o__level_types
                 room.ceilTex = AssetMan.Get<Sprite>("spr_elc_ceil").texture;
                 room.florTex = AssetMan.Get<Sprite>("spr_elc_floor").texture;
                 room.wallTex = AssetMan.Get<Sprite>("spr_elc_wall").texture;
-                
+
                 room.standardLightCells.RemoveAll(x => x.x % 5 == 0 && x.z % 5 == 0);
                 room.color = Color.magenta;
                 room.type = RoomType.Room;
@@ -163,13 +164,13 @@ namespace Lots_o__level_types
             var laserModel1 = AssetLoader.ModelFromMod(this, "lazer-1.obj");
             var laserModel2 = AssetLoader.ModelFromMod(this, "lazeractual-1.obj");
             GameObject LaserFieldPrefab = new GameObject("Prefab_LaserField");
-            laserModel1.transform.SetParent(LaserFieldPrefab.transform,false);
-            laserModel2.transform.SetParent(LaserFieldPrefab.transform,false);
+            laserModel1.transform.SetParent(LaserFieldPrefab.transform, false);
+            laserModel2.transform.SetParent(LaserFieldPrefab.transform, false);
             for (int i = 0; i < laserModel1.transform.childCount; i++)
             {
 
-                    laserModel1.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material = TopLaserMaterial;
-                
+                laserModel1.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material = TopLaserMaterial;
+
             }
             for (int i = 0; i < laserModel2.transform.childCount; i++)
             {
@@ -217,6 +218,7 @@ namespace Lots_o__level_types
             SteamBlockage SteamBlockageComp = SteamPrefabObject.AddComponent<SteamBlockage>();
             var colliderSteam = SteamPrefabObject.AddComponent<BoxCollider>();
             colliderSteam.size = new Vector3(10, 10, 2.5f);
+            colliderSteam.center += new Vector3(5, 0, 0);
             SteamBlockageComp.prefab = ParticlePrefabCloud;
             SteamBlockageComp.AudMan = SteamPrefabObject.AddComponent<PropagatedAudioManager>();
             SteamBlockageComp.AudMan.ReflectionSetVariable("minDistance", 25);
@@ -238,18 +240,18 @@ namespace Lots_o__level_types
                 .SetLayer("CollidableEntities")
                 .SetBaseRadius(0.5f)
                 .AddTrigger(0.5f)
-                
+
                 .SetHeight(10)
                 .AddDefaultRenderBaseFunction(AssetMan.Get<Sprite>("spr_bigcloud"))
                 .Build();
             SteamSteamPrefab.gameObject.AddComponent<SteamSteam>();
-            
+
             var LightPrefab = new GameObject("LightShafts");
             var BaseLightRenderer = new GameObject("BaseRenderer");
             var lightRenderer = BaseLightRenderer.AddComponent<SpriteRenderer>();
             BaseLightRenderer.transform.SetParent(LightPrefab.transform, false);
             lightRenderer.gameObject.layer = LayerMask.NameToLayer("Billboard");
-            
+
             LightPrefab.ConvertToPrefab(true);
             lightRenderer.transform.localPosition += new Vector3(0, 8.5f, 0);
             lightRenderer.material = Resources.FindObjectsOfTypeAll<Material>().First(x => x.name == "SpriteStandard_Billboard");
@@ -263,7 +265,7 @@ namespace Lots_o__level_types
                 mainTexture = AssetMan.Get<Sprite>("spr_ShaftVent").texture
             };
 
-            GameObject SteamShooterBox =GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject SteamShooterBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
             SteamShooterBox.transform.localScale = new Vector3(10f, 10f, 1f);
             SteamShooterBox.GetComponent<Renderer>().material = ShaftVent;
             SteamShooterBox.ConvertToPrefab(true);
@@ -277,14 +279,22 @@ namespace Lots_o__level_types
             Structure_SteamShooter structure_SteamShooter = StructureSteamShooterObj.AddComponent<Structure_SteamShooter>();
             structure_SteamShooter.prefab = SteamShooter;
             AssetMan.Add<Structure_SteamShooter>("SS", structure_SteamShooter);
+            #endregion
             yield return "loading Greenhouse level type assets";
-
-
+            GreenhouseType = EnumExtensions.ExtendEnum<LevelType>("Greenhouse");
+            AssetMan.Add<Sprite>("spr_greenhouse_floor", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_floor.png"));
+            AssetMan.Add<Sprite>("spr_greenhouse_ceil", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_ceiling.png"));
+            AssetMan.Add<Sprite>("spr_greenhouse_wall", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_wall.png"));
+            AssetMan.Add<WindowObject>("Window_Greenhouse", ObjectCreators.CreateWindowObject("GreenhouseWindow",
+                AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_window.png").texture,
+                AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_windowbroken.png").texture,
+                AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_windowMask.png").texture));
             yield return "Adding level typed Support, if no level typed then this will be skipped";
             if (Chainloader.PluginInfos.ContainsKey("mtm101.rulerp.baldiplus.leveltyped"))
             {
                 LeveltypedAdder.Add();
             }
+            Debug.Log("Loaded " + AssetMan.GetUniqueCount() + " assets for Lots o' level types");
 
 
         }
@@ -642,10 +652,33 @@ namespace Lots_o__level_types
 
         }
         #endregion
+       
+       #region Greenhouse floor type
+        public void ModifyIntoGreenhouse(LevelObject toModify, int levelId)
+        {
+            toModify.hallCeilingTexs = [new WeightedTexture2D() {
+                selection = AssetMan.Get<Sprite>("spr_greenhouse_ceil").texture,
+                weight = 99
+            }];
+            toModify.hallWallTexs = [new WeightedTexture2D() {
+                selection = AssetMan.Get<Sprite>("spr_greenhouse_wall").texture,
+                weight = 99
+            }];
+            toModify.hallFloorTexs = [new WeightedTexture2D() {
+                selection = AssetMan.Get<Sprite>("spr_greenhouse_floor").texture,
+                weight = 99
+            }];
+
+        
+
+        }
+        #endregion
+       
+       
         public bool shouldGenerateFloorType(string levelName, int LevelId, SceneObject scene, string TypeName)
         {
-            if (levelName != "F4" && levelName != "F5" 
-                && Config.Bind<bool>("Enables the floor type " + TypeName + " disabling it will make it not spawn on F4 and F5",TypeName,true).Value) return false;
+            if (levelName != "F4" && levelName != "F5"
+                && Config.Bind<bool>("Enables the floor type " + TypeName + " disabling it will make it not spawn on F4 and F5", TypeName, true).Value) return false;
             return true;
         }
         #region floor type creators
@@ -753,26 +786,26 @@ namespace Lots_o__level_types
         }
         void GreenhouseTypeCreator(string levelName, int levelId, SceneObject scene)
         {
-            if (!shouldGenerateFloorType(levelName, levelId, scene, "Shafts")) return;
+            if (!shouldGenerateFloorType(levelName, levelId, scene, "Greenhouse")) return;
             CustomLevelObject[] supportedObjects = scene.GetCustomLevelObjects();
             CustomLevelObject factorylevel = supportedObjects.First(x => x.type == LevelType.Factory);
             if (factorylevel == null) return;
-            CustomLevelObject ShaftsClone = factorylevel.MakeClone();
-            ShaftsClone.type = ShaftType;
-            ShaftsClone.name = "ShaftClone";
-            List<StructureWithParameters> structures = ShaftsClone.forcedStructures.ToList();
+            CustomLevelObject GreenHouseClone = factorylevel.MakeClone();
+            GreenHouseClone.type = GreenhouseType;
+            GreenHouseClone.name = "GreenHouseClone";
+            List<StructureWithParameters> structures = GreenHouseClone.forcedStructures.ToList();
             structures.RemoveAll(x => x.prefab is Structure_Rotohalls);
             structures.RemoveAll(x => x.prefab is Structure_ConveyorBelt);
             structures.RemoveAll(x => x.prefab.name == "LockdownDoorConstructor");
             structures.RemoveAll(x => x.prefab is Structure_LevelBox);
-           
-            ShaftsClone.forcedStructures = structures.ToArray();
-            
-            ModifyIntoShafts(ShaftsClone, levelId);
+
+            GreenHouseClone.forcedStructures = structures.ToArray();
+
+            ModifyIntoGreenhouse(GreenHouseClone, levelId);
             scene.randomizedLevelObject = scene.randomizedLevelObject.AddToArray(new WeightedLevelObject()
             {
-                selection = ShaftsClone,
-                weight = 100
+                selection = GreenHouseClone,
+                weight = 10000
             });
 
 
@@ -785,6 +818,7 @@ namespace Lots_o__level_types
             PartyBashTypeCreator(levelName, levelId, scene);
             TechyTypeCreator(levelName, levelId, scene);
             ShaftsTypeCreator(levelName, levelId, scene);
+            GreenhouseTypeCreator(levelName, levelId, scene);
         }
         void genModification(string levelName, int levelId, SceneObject scene)
         {

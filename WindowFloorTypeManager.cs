@@ -9,17 +9,26 @@ namespace Lots_o__level_types
     static internal class WindowFloorTypeManager
     {
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Window),"Initialize")]
+        [HarmonyPatch(typeof(Window), "Initialize")]
         static void WindowPatchInit(Window __instance)
         {
-            if (Singleton<BaseGameManager>.Instance.GetType() != typeof(MainGameManager)) return;
+            if (Singleton<BaseGameManager>.Instance.GetType() != typeof(MainGameManager) && !__instance.ec.Active) return;
             var lvltype = Singleton<BaseGameManager>.Instance.levelObject.type;
             if (lvltype == BasePlugin.ShaftType)
             {
                 __instance.ReflectionSetVariable("windowObject", BasePlugin.AssetMan.Get<WindowObject>("Window_Shafts"));
                 __instance.UpdateTextures();
             }
+            if (lvltype == BasePlugin.GreenhouseType)
+            {
+                __instance.ReflectionSetVariable("windowObject", BasePlugin.AssetMan.Get<WindowObject>("Window_Greenhouse"));
+                __instance.UpdateTextures();
+            }
 
         }
+
+        
     }
+    
+
 }
