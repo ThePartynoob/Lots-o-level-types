@@ -311,10 +311,41 @@ namespace Lots_o__level_types
             AssetMan.Add("itm_flowerpot", new ItemBuilder(this.Info)
             .SetGeneratorCost(int.MaxValue)
             .SetItemComponent<ITM_FlowerPot>()
+            .SetEnum("FlowerThePot")
             .SetSprites(AssetMan.Get<Sprite>("spr_gh_flowerpot"), AssetMan.Get<Sprite>("spr_gh_flowerpot"))
             .SetNameAndDescription("ITM_Flowerpot", "DESC_Flowerpot")
             .Build());
-            
+
+            AssetMan.Add("spr_smallWateringCan", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 25, "wateringcansmall.png"));
+            AssetMan.Add("spr_bigWateringCan", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 50, "wateringcanlarge.png"));
+            AssetMan.Add("itm_wateringcan", new ItemBuilder(this.Info)
+            .SetGeneratorCost(65)
+            .SetEnum("WateringCan")
+            .SetItemComponent<ITM_WateringCan>()
+            .SetSprites(AssetMan.Get<Sprite>("spr_smallWateringCan"), AssetMan.Get<Sprite>("spr_bigWateringCan"))
+            .SetNameAndDescription("ITM_Flowerpot", "DESC_Flowerpot")
+            .Build());
+
+            AssetMan.Add("nothing", new GameObject("Nothing"));
+            AssetMan.Get<GameObject>("nothing").ConvertToPrefab(true);
+            AssetMan.Add("spr_sprout", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 50, "sproutlings.png"));
+            var Sprouts = new GameObject("Sprout");
+            Sprouts.AddComponent<CustomTag>().customTag = "LOLT_Sprout";
+            var SproutsC = Sprouts.AddComponent<BoxCollider>();
+            SproutsC.size = new Vector3(4, 20, 4);
+            SproutsC.isTrigger = true;
+            var SproutsRenderer = new GameObject("BaseRenderer").AddComponent<SpriteRenderer>();
+            SproutsRenderer.transform.SetParent(Sprouts.transform);
+            Sprouts.ConvertToPrefab(true);
+            SproutsRenderer.sprite = AssetMan.Get<Sprite>("spr_sprout");
+            SproutsRenderer.gameObject.layer = LayerMask.NameToLayer("Billboard");
+            SproutsRenderer.material = Resources.FindObjectsOfTypeAll<Material>().First(x => x.name == "SpriteStandard_Billboard");
+            AssetMan.Add("sprout", Sprouts);
+            AssetMan.Add("snd_WateringCan", ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(this, "Wateringcansound.wav"), "sfx_wateringplant", SoundType.Effect, Color.black, 0));
+            AssetMan.Get<SoundObject>("snd_WateringCan").subtitle = false;
+
+
+
             yield return "Adding level typed Support, if no level typed then this will be skipped";
             if (Chainloader.PluginInfos.ContainsKey("mtm101.rulerp.baldiplus.leveltyped"))
             {
@@ -679,8 +710,8 @@ namespace Lots_o__level_types
 
         }
         #endregion
-       
-       #region Greenhouse floor type
+
+        #region Greenhouse floor type
         public void ModifyIntoGreenhouse(LevelObject toModify, int levelId)
         {
             toModify.hallCeilingTexs = [new WeightedTexture2D() {
@@ -695,6 +726,18 @@ namespace Lots_o__level_types
                 selection = AssetMan.Get<Sprite>("spr_greenhouse_floor").texture,
                 weight = 99
             }];
+            toModify.hallLights = [
+                new() {
+                    selection = AssetMan.Get<GameObject>("nothing").transform,
+                    weight = 999
+                }
+            ];
+            toModify.forcedItems.Add(AssetMan.Get<ItemObject>("itm_wateringcan"));
+            toModify.potentialItems = toModify.potentialItems.AddToArray(new()
+            {
+                selection = AssetMan.Get<ItemObject>("itm_wateringcan"),
+                weight = 25
+            });
 
         
 
@@ -849,6 +892,7 @@ namespace Lots_o__level_types
                 selection = GreenHouseClone,
                 weight = 10000
             });
+            
 
 
 
