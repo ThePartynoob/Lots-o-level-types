@@ -13,7 +13,7 @@ namespace Lots_o__level_types
             LevelTyped.LevelTypedPlugin.Instance.AddExtraGenerator(new LevelTypedPartybash());
             LevelTyped.LevelTypedPlugin.Instance.AddExtraGenerator(new LevelTypedTechy());
             LevelTyped.LevelTypedPlugin.Instance.AddExtraGenerator(new LevelTypedShafts());
-            LevelTyped.LevelTypedPlugin.Instance.AddExtraGenerator(new LevelTypedGreenHouse());
+            
         }
     }
 
@@ -101,32 +101,5 @@ namespace Lots_o__level_types
             return Mathf.CeilToInt(base.GetWeight(defaultWeight) * 1.1f);
         }
     }
-    internal class LevelTypedGreenHouse : LevelTypedGenerator
-    {
-        public override LevelType levelTypeToBaseOff => LevelType.Factory;
-
-        public override LevelType myLevelType => BasePlugin.GreenhouseType;
-
-        public override string levelObjectName => "Greenhouse";
-
-        public override void ApplyChanges(string levelName, int levelId, CustomLevelObject obj)
-        {
-            obj.type = BasePlugin.GreenhouseType;
-            obj.name = "Greenhouse";
-            obj.forcedStructures = [];
-
-
-            BasePlugin.instance.ModifyIntoGreenhouse(obj, levelId);
-        }
-
-        public override bool ShouldGenerate(string levelName, int levelId, SceneObject sceneObject)
-        {
-            return !BasePlugin.instance.shouldGenerateFloorType(levelName, levelId, sceneObject, "Greenhouse");
-        }
-
-        public override int GetWeight(int defaultWeight)
-        {
-            return Mathf.CeilToInt(base.GetWeight(defaultWeight) * 1.1f);
-        }
-    }
+    
 }

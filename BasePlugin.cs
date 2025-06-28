@@ -283,66 +283,9 @@ namespace Lots_o__level_types
             structure_SteamShooter.prefab = SteamShooter;
             AssetMan.Add<Structure_SteamShooter>("SS", structure_SteamShooter);
             #endregion
-            yield return "loading Greenhouse level type assets";
+            yield return "loading  level type assets";
             GreenhouseType = EnumExtensions.ExtendEnum<LevelType>("Greenhouse");
-            AssetMan.Add<Sprite>("spr_greenhouse_floor", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_floor.png"));
-            AssetMan.Add<Sprite>("spr_greenhouse_ceil", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_ceiling.png"));
-            AssetMan.Add<Sprite>("spr_greenhouse_wall", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_wall.png"));
-            AssetMan.Add<Sprite>("spr_gh_flowerpot", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 50, "flower_pot.png"));
-            AssetMan.Add<WindowObject>("Window_Greenhouse", ObjectCreators.CreateWindowObject("GreenhouseWindow",
-                AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_window.png").texture,
-                AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_windowbroken.png").texture,
-                AssetLoader.SpriteFromMod(this, Vector2.one / 2, 10, "gh_windowMask.png").texture));
-            var GhPotPlant = new GameObject("gh_pottedPlant");
-            var potRenderer = new GameObject("BaseRenderer");
-            potRenderer.layer = LayerMask.NameToLayer("Billboard");
-            potRenderer.transform.SetParent(GhPotPlant.transform);
-            var PRR = potRenderer.AddComponent<SpriteRenderer>();
-            PRR.material = Resources.FindObjectsOfTypeAll<Material>().First(x => x.name == "SpriteStandard_Billboard");
-            PRR.sprite = AssetMan.Get<Sprite>("spr_gh_flowerpot");
-            AssetMan.Add("pottedPlant", potRenderer);
-            GhPotPlant.layer = LayerMask.NameToLayer("ClickableEntities");
-            var potCollider = GhPotPlant.AddComponent<BoxCollider>();
-            potCollider.size = Vector3.one * 3.5f;
-            potCollider.isTrigger = true;
-            GhPotPlant.AddComponent<FlowerPot>();
-            GhPotPlant.ConvertToPrefab(true);
-
-            AssetMan.Add("itm_flowerpot", new ItemBuilder(this.Info)
-            .SetGeneratorCost(int.MaxValue)
-            .SetItemComponent<ITM_FlowerPot>()
-            .SetEnum("FlowerThePot")
-            .SetSprites(AssetMan.Get<Sprite>("spr_gh_flowerpot"), AssetMan.Get<Sprite>("spr_gh_flowerpot"))
-            .SetNameAndDescription("ITM_Flowerpot", "DESC_Flowerpot")
-            .Build());
-
-            AssetMan.Add("spr_smallWateringCan", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 25, "wateringcansmall.png"));
-            AssetMan.Add("spr_bigWateringCan", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 50, "wateringcanlarge.png"));
-            AssetMan.Add("itm_wateringcan", new ItemBuilder(this.Info)
-            .SetGeneratorCost(65)
-            .SetEnum("WateringCan")
-            .SetItemComponent<ITM_WateringCan>()
-            .SetSprites(AssetMan.Get<Sprite>("spr_smallWateringCan"), AssetMan.Get<Sprite>("spr_bigWateringCan"))
-            .SetNameAndDescription("ITM_Flowerpot", "DESC_Flowerpot")
-            .Build());
-
-            AssetMan.Add("nothing", new GameObject("Nothing"));
-            AssetMan.Get<GameObject>("nothing").ConvertToPrefab(true);
-            AssetMan.Add("spr_sprout", AssetLoader.SpriteFromMod(this, Vector2.one / 2, 50, "sproutlings.png"));
-            var Sprouts = new GameObject("Sprout");
-            Sprouts.AddComponent<CustomTag>().customTag = "LOLT_Sprout";
-            var SproutsC = Sprouts.AddComponent<BoxCollider>();
-            SproutsC.size = new Vector3(4, 20, 4);
-            SproutsC.isTrigger = true;
-            var SproutsRenderer = new GameObject("BaseRenderer").AddComponent<SpriteRenderer>();
-            SproutsRenderer.transform.SetParent(Sprouts.transform);
-            Sprouts.ConvertToPrefab(true);
-            SproutsRenderer.sprite = AssetMan.Get<Sprite>("spr_sprout");
-            SproutsRenderer.gameObject.layer = LayerMask.NameToLayer("Billboard");
-            SproutsRenderer.material = Resources.FindObjectsOfTypeAll<Material>().First(x => x.name == "SpriteStandard_Billboard");
-            AssetMan.Add("sprout", Sprouts);
-            AssetMan.Add("snd_WateringCan", ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(this, "Wateringcansound.wav"), "sfx_wateringplant", SoundType.Effect, Color.black, 0));
-            AssetMan.Get<SoundObject>("snd_WateringCan").subtitle = false;
+            
 
 
 
@@ -854,49 +797,8 @@ namespace Lots_o__level_types
 
 
         }
-        void GreenhouseTypeCreator(string levelName, int levelId, SceneObject scene)
-        {
-            if (!shouldGenerateFloorType(levelName, levelId, scene, "Greenhouse")) return;
-            CustomLevelObject[] supportedObjects = scene.GetCustomLevelObjects();
-            CustomLevelObject factorylevel = supportedObjects.First(x => x.type == LevelType.Factory);
-            if (factorylevel == null) return;
-            CustomLevelObject GreenHouseClone = factorylevel.MakeClone();
-            GreenHouseClone.type = GreenhouseType;
-            GreenHouseClone.name = "GreenHouseClone";
-            List<StructureWithParameters> structures = GreenHouseClone.forcedStructures.ToList();
-            structures.RemoveAll(x => x.prefab is Structure_Rotohalls);
-            structures.RemoveAll(x => x.prefab is Structure_ConveyorBelt);
-            structures.RemoveAll(x => x.prefab.name == "LockdownDoorConstructor");
-            structures.RemoveAll(x => x.prefab is Structure_LevelBox);
-            structures.Add(new()
-            {
-                parameters = new()
-                {
-                    minMax = [new IntVector2(5, 0)],
-                    chance = [0.25f],
-                    prefab = new WeightedGameObject[] {
-                        new WeightedGameObject() {
-                            selection = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Door_Swinging"),
-                            weight = 99
-                        }
-                    }
-                },
-                prefab = Resources.FindObjectsOfTypeAll<Structure_HallDoor>().First(x => x.name == "SwingingDoorConstructor")
-            }
-            );
-            GreenHouseClone.forcedStructures = structures.ToArray();
-            GreenHouseClone.skybox = Resources.FindObjectsOfTypeAll<Cubemap>().First(x => x.name == "Cubemap_DayStandard");
-            ModifyIntoGreenhouse(GreenHouseClone, levelId);
-            scene.randomizedLevelObject = scene.randomizedLevelObject.AddToArray(new WeightedLevelObject()
-            {
-                selection = GreenHouseClone,
-                weight = 10000
-            });
-            
-
-
-
-        }
+        
+        
         #endregion
 
         void LevelTypeCreatorHandler(string levelName, int levelId, SceneObject scene)
@@ -904,7 +806,6 @@ namespace Lots_o__level_types
             PartyBashTypeCreator(levelName, levelId, scene);
             TechyTypeCreator(levelName, levelId, scene);
             ShaftsTypeCreator(levelName, levelId, scene);
-            GreenhouseTypeCreator(levelName, levelId, scene);
         }
         void genModification(string levelName, int levelId, SceneObject scene)
         {

@@ -94,37 +94,5 @@ namespace Lots_o__level_types
         }
     }
 
-    [HarmonyPatch]
-    public static class LevelEditorStuff {
-        public static void AddObject(PlusLevelEditor __instance, string name, Sprite sprite, GameObject obj)
-        {
-            string iconName = "UI/Object_" + name;
-            bool alreadyInEditorObjects = BaldiLevelEditorPlugin.editorObjects.Exists(
-        eo => eo.name == name
-    );
-    // Check if the object is already in prefabAliases
-    bool alreadyInPrefabAliases = PlusLevelLoaderPlugin.Instance.prefabAliases.ContainsKey(name);
 
-    if (!alreadyInEditorObjects) BaldiLevelEditorPlugin.editorObjects.Add(EditorObjectType.CreateFromGameObject<EditorPrefab, PrefabLocation>(name, obj, new Vector3(0,5,0)));
-    if (!alreadyInPrefabAliases) PlusLevelLoaderPlugin.Instance.prefabAliases.Add(name, obj.transform.parent.gameObject);
-
-            if (!BaldiLevelEditorPlugin.Instance.assetMan.ContainsKey(iconName))
-            {
-                BaldiLevelEditorPlugin.Instance.assetMan.Add(iconName, sprite.ResizeSprite(32, 32));
-            }
-            
-            __instance.toolCats.Find(x => x.name == "objects").tools.Add(new RotateAndPlacePrefab(name));
-            
-        }
-
-
-
-        [HarmonyPatch(typeof(PlusLevelEditor), "Initialize")]
-        [HarmonyPostfix]
-        private static void AddData(PlusLevelEditor __instance){
-            AddObject(__instance, "PottedPlant",
-            BasePlugin.AssetMan.Get<Sprite>("spr_gh_flowerpot"),
-            BasePlugin.AssetMan.Get<GameObject>("pottedPlant"));
-        }
-    }
 }
